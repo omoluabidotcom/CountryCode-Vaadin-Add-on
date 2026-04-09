@@ -1,0 +1,52 @@
+/* Country Number Component Styles */
+.country-code-section {
+    display: flex;
+    align-items: center;
+    background: var(--lumo-contrast-5pct, #f5f5f5);
+    padding: 0 4px 0 8px;
+    min-width: 120px;
+    cursor: pointer;
+    gap: 4px;
+}
+
+/* Ensure ComboBox dropdown arrow is visible */
+.country-code-section vaadin-combo-box {
+    flex: 1;
+    min-width: 0;
+}
+
+.country-code-section vaadin-combo-box::part(toggle-button) {
+    color: var(--lumo-contrast-70pct, #666666);
+    cursor: pointer;
+}
+
+.country-code-section vaadin-combo-box::part(input-field) {
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+
+.country-code-section vaadin-combo-box::part(text-field) {
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+
+/* Ensure the selected value displays properly */
+.country-code-section vaadin-combo-box [slot="value"] {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Focus state for the entire component */
+vaadin-horizontal-layout:focus-within {
+    border-color: var(--lumo-primary-color, #0066cc) !important;
+    box-shadow: 0 0 0 2px var(--lumo-primary-color-10pct, rgba(0, 102, 204, 0.1));
+}
+
+/* Invalid state */
+vaadin-horizontal-layout.invalid {
+    border-color: var(--lumo-error-color, #e81123) !important;
+}
+

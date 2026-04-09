@@ -4,22 +4,21 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.vaadin.addons.mygroup</groupId>
-    <artifactId>addon-example</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-    <name>Add-on for Vaadin</name>
-    <description>###Project Name###</description>
+    <groupId>org.vaadin.addons.yahaya</groupId>
+    <artifactId>yahaya-countrycode-vaadin-inbuilt</artifactId>
+    <version>1.0.0</version>
+    <name>yahaya-countrycode-vaadin-inbuilt</name>
+    <description>Country Code Component for Vaadin</description>
 
     <properties>
-        <vaadin.version>24.9.8</vaadin.version>
-
+        <vaadin.version>23.3.6</vaadin.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
     <organization>
-        <name>###author###</name>
+        <name>YahayaYusuf</name>
     </organization>
     <licenses>
         <license>
@@ -124,11 +123,11 @@
             </plugin>
 
             <plugin>
-                <groupId>org.eclipse.jetty.ee10</groupId>
-                <artifactId>jetty-ee10-maven-plugin</artifactId>
-                <version>12.0.15</version>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>9.4.54.v20240208</version>
                 <configuration>
-                    <scan>-1</scan>
+<!--                    <scan>-1</scan>-->
                     <!-- Use test scope because the UI/test classes are in
                         the test package. -->
                     <useTestScope>true</useTestScope>
@@ -265,10 +264,10 @@
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>org.eclipse.jetty.ee10</groupId>
-                        <artifactId>jetty-ee10-maven-plugin</artifactId>
+                        <groupId>org.eclipse.jetty</groupId>
+                        <artifactId>jetty-maven-plugin</artifactId>
                         <configuration>
-                            <scan>0</scan>
+<!--                            <scan>0</scan>-->
                             <stopPort>8081</stopPort>
                             <useTestScope>true</useTestScope>
                             <supportedPackagings>

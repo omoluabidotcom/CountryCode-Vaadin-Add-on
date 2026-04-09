@@ -1,62 +1,121 @@
-# Vaadin Add-on example project
+# CountryNumber — Vaadin Phone Input Add-on
 
-An empty project for creating a Vaadin add-on. You should start from this project if your add-on's components are based on the existing Vaadin classes or doesn't use 3rd party JavaScript modules.
+A server-side Vaadin add-on that provides a phone number input field with an integrated country-code selector (flag + dial code). Built on `CustomField<String>` — no client-side JavaScript required.
 
-## Add-on architecture
-![server-side-addon](https://user-images.githubusercontent.com/991105/211870086-75544597-847d-4d21-82fa-341411753558.svg)
+## Features
 
-## Alternative add-on templates
+- 🏳️ Country flag + dial-code dropdown (25 countries)
+- 📞 Combined model value (`+358401234567`)
+- 🔍 Filterable country list (by name, ISO code, or dial code)
+- ✅ Automatic whitespace normalization
+- 🔁 Round-trip value parsing — set `+447700900123` and it selects 🇬🇧 UK automatically
+- ♿ Inherits Vaadin's built-in validation, read-only, and error states
 
-If you wish to build and publish an add-on or extension in [Vaadin Directory](https://vaadin.com/directory), Vaadin provides the following three template projects:
- 1. **(this repo)** [vaadin/addon-template](https://github.com/vaadin/addon-template): Create a composite component. This Java-only template is the easiest when extending Vaadin Java components.
- 2. [vaadin/client-server-addon-template](https://github.com/vaadin/client-server-addon-template): Build a standalone, client-server TypeScript-Java component. This template provides you with a [Lit-based](https://github.com/lit/lit/) example to start with.
- 3. [vaadin/npm-addon-template](https://github.com/vaadin/npm-addon-template): Wrap a web component from [npmjs.com](https://npmjs.com/) as a Vaadin Java component.
+## Requirements
 
+| Dependency | Version |
+|------------|---------|
+| Java       | 17+     |
+| Vaadin     | 23.3+   |
+| Maven      | 3.8+    |
 
-## Development instructions
+## Quick Start
 
-### Important Files 
-* TheAddon.java: this is the addon-on component class. You can add more classes if you wish, including other Components.
-* TestView.java: A View class that let's you test the component you are building. This and other classes in the test folder will not be packaged during the build. You can add more test view classes in this package.
-* assembly/: this folder includes configuration for packaging the project into a JAR so that it works well with other Vaadin projects and the Vaadin Directory. There is usually no need to modify these files, unless you need to add JAR manifest entries.
+### Run the Demo
 
-If you are using static resources such as images, JS (e.g. templates) and CSS files the correct location for them is under the `/src/main/resources/META-INF/resources/frontend` directory and is described here [Resource Cheat Sheet](https://vaadin.com/docs/v14/flow/importing-dependencies/tutorial-ways-of-importing.html#resource-cheat-sheet)in more details. 
-
-### Deployment
-
-Starting the test/demo server:
-```
+```bash
 mvn jetty:run -Pdevelopment
 ```
 
-This deploys demo at http://localhost:8080
- 
-### Integration test
+Open [http://localhost:8080](http://localhost:8080) — the `DemoView` showcase page loads automatically.
 
-To run Integration Tests, execute `mvn verify -Pit,production`.
+### Run Unit Tests
 
-Tests run by default in `headless` mode, to avoid browser windows to be opened for every test.
-This behaviour is always disabled when running the tests in debug mode in the IDE
-or when running maven with the `-Dmaven.failsafe.debug` sytem property.
-On normal execution, headless mode can be deactivated using the `-Dtest.headless=false` system property.
-
-## Publishing to Vaadin Directory
-
-You should change the `organization.name` property in `pom.xml` to your own name/organization.
-
-```
-    <organization>
-        <name>###author###</name>
-    </organization>
+```bash
+mvn test
 ```
 
-You can create the zip package needed for [Vaadin Directory](https://vaadin.com/directory/) using
+Runs `CountryNumberTest` (value parsing, round-trip, reformat) and `CountryNumberEdgeCasesTest` (+1 ambiguity, whitespace normalization).
+
+## Usage
+
+### Basic
+
+```java
+CountryNumber phone = new CountryNumber();
+phone.setPlaceholder("Phone number");
+phone.addValueChangeListener(e -> 
+    System.out.println("Full number: " + e.getValue()));
+```
+
+### Pre-select a Country
+
+```java
+phone.setCountryCode(CountryCode.UNITED_KINGDOM);
+// or by ISO code
+phone.setCountryCodeByIso("GB");
+```
+
+### Set a Full Value Programmatically
+
+```java
+phone.setValue("+447700900123"); // auto-selects 🇬🇧 UK
+```
+
+### Validation State
+
+```java
+phone.setInvalid(true);
+phone.setErrorMessage("Number is too short");
+```
+
+## Project Structure
 
 ```
-mvn versions:set -DnewVersion=1.0.0 # You cannot publish snapshot versions 
-mvn clean package -Pdirectory
+src/
+├── main/java/org/vaadin/addons/yahaya/
+│   ├── CountryCode.java       # Enum of supported countries (ISO, flag, dial code)
+│   └── CountryNumber.java     # The add-on component (CustomField<String>)
+├── main/resources/META-INF/resources/frontend/
+│   └── country-number.css     # Component styles
+└── test/java/org/vaadin/addons/yahaya/
+    ├── DemoView.java                   # Showcase page (@Route(""))
+    ├── CountryNumberTest.java          # Unit tests — parsing & formatting
+    └── CountryNumberEdgeCasesTest.java # Edge-case tests — +1 ambiguity, whitespace
 ```
 
-The package is created as `target/{project-name}-1.0.0.zip`
+> Test classes live under `src/test` and are **not** packaged into the add-on JAR.
 
-For more information or to upload the package, visit https://vaadin.com/directory/my-components?uploadNewComponent
+## Contributing
+
+Contributions are welcome! Here's how to get started:
+
+1. **Open an issue first** — describe the bug, fix, or feature you want to work on. This avoids duplicate effort and gives maintainers a chance to provide early feedback.
+2. **Fork & clone** the repository.
+3. **Create a branch** for your change:
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+4. **Run the demo** to make sure the project builds and works:
+   ```bash
+   mvn jetty:run -Pdevelopment
+   ```
+5. **Make your changes** — keep them focused on a single concern.
+6. **Add or update tests** for any new or changed behavior.
+7. **Run all tests** before committing:
+   ```bash
+   mvn test
+   ```
+8. **Commit** with a clear, descriptive message.
+9. **Push** your branch and open a **pull request** against `main`.
+
+### Guidelines
+
+- Follow existing code style and naming conventions.
+- Keep PRs small and reviewable — one feature or fix per PR.
+- New public API methods should include usage examples in the PR description.
+- All existing tests must continue to pass.
+
+## License
+
+[Apache License 2.0](LICENSE)

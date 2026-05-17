@@ -4,11 +4,27 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.vaadin.addons.yahaya</groupId>
+    <groupId>io.github.omoluabidotcom</groupId>
     <artifactId>yahaya-countrycode-vaadin-inbuilt</artifactId>
     <version>1.0.0</version>
     <name>yahaya-countrycode-vaadin-inbuilt</name>
     <description>Country Code Component for Vaadin</description>
+    <url>https://github.com/omoluabidotcom/CountryCode-Vaadin-Add-on</url>
+
+    <scm>
+        <connection>scm:git:git://github.com/omoluabidotcom/CountryCode-Vaadin-Add-on.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/omoluabidotcom/CountryCode-Vaadin-Add-on.git</developerConnection>
+        <url>https://github.com/omoluabidotcom/CountryCode-Vaadin-Add-on</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>omoluabidotcom</id>
+            <name>Yahaya Yusuf</name>
+            <email>yyahaya222@@yahoo.com</email>
+        </developer>
+    </developers>
 
     <properties>
         <vaadin.version>23.3.6</vaadin.version>
@@ -120,6 +136,17 @@
                         <exclude>META-INF/VAADIN/config/flow-build-info.json</exclude>
                     </excludes>
                 </configuration>                     
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>3.1.1</version>
+                <configuration>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <useReleaseProfile>false</useReleaseProfile>
+                    <releaseProfiles>release</releaseProfiles>
+                </configuration>
             </plugin>
 
             <plugin>
@@ -318,6 +345,67 @@
                             <trimStackTrace>false</trimStackTrace>
                             <enableAssertions>true</enableAssertions>
                         </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <!-- Uploads to Maven Central -->
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>0.6.0</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <publishingServerId>central</publishingServerId>
+                            <autoPublish>true</autoPublish>
+                        </configuration>
+                    </plugin>
+
+                    <!-- Attaches source JAR -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>3.3.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals><goal>jar-no-fork</goal></goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- Attaches Javadoc JAR -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>3.10.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals><goal>jar</goal></goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <doclint>none</doclint>
+                        </configuration>
+                    </plugin>
+
+                    <!-- Signs everything with your PGP key -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>3.2.4</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals><goal>sign</goal></goals>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>

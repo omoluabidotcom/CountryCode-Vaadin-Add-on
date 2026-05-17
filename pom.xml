@@ -4,7 +4,7 @@
 
     <groupId>io.github.omoluabidotcom</groupId>
     <artifactId>yahaya-countrycode-vaadin-inbuilt</artifactId>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
     <name>yahaya-countrycode-vaadin-inbuilt</name>
     <description>Country Code Component for Vaadin</description>
     <url>https://github.com/omoluabidotcom/CountryCode-Vaadin-Add-on</url>
